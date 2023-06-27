@@ -25,10 +25,6 @@ public class McdcServiceTest {
     @Test
     public void getMcdcParams() {
 
-        String initialParam = "{\"appkey\":\"3905d343fe72156d\",\"areacode\":\"0516\"}";
-
-        MultiValueMap<String, String> initialMultiMap = MapUtil.jsonStr2MultiMap(initialParam);
-        ///List<MultiValueMap<String, String>> mcdcList = mcdcService.getMcdcParams(initialMultiMap);
 
     }
 

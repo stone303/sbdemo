@@ -1,14 +1,12 @@
 package com.example.sbdemo.utils;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.util.StringUtils;
 
-import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -17,64 +15,50 @@ import java.util.stream.Collectors;
  *
  *
  */
+
+@Slf4j
 public class MapUtil {
 
-    public static MultiValueMap<String, String> json2MultiMap(String jsonStr)
-    {
-        ObjectMapper objectMapper = new ObjectMapper();
-        try {
-            MultiValueMap<String, String> multiMap = objectMapper.readValue(jsonStr, LinkedMultiValueMap.class);
-            return multiMap;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return   null;
-    }
-    public static MultiValueMap<String, String> jsonStr2MultiMap(String jsonstr)
+
+    public static MultiValueMap<String, String> jsonStr2MultiMap( String str)
     {
 
-        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        log.info("----"+str);
 
-        // 将JSON字符串解析为JSONObject
-        JSONObject jsonObj = new JSONObject(Boolean.parseBoolean(jsonstr));
+        JSONObject jsonobject = JSONObject.parseObject(str);
 
-        // 使用Spring的MultiValueMap存放键值对
-        for (String key : jsonObj.keySet()) {
-            String value = jsonObj.getString(key);
-            map.add(key, value);
+        // convert JSONObject to Map
+        Map<String, String> map = new HashMap<>();
+        for (String key : jsonobject.keySet()) {
+            map.put(key, jsonobject.getString(key));
         }
 
-        return map;
+        // convert Map to MultiValueMap
+        MultiValueMap<String, String> multiValueMap = new LinkedMultiValueMap<>();
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            multiValueMap.add(entry.getKey(), entry.getValue());
+        }
+
+        return multiValueMap;
     }
 
-
-    public static String  map2UrlStr(Map<String, String> map)
-    {
-        String jsonString = JSON.toJSONString(map);
-        return jsonString;
-    }
     /**
      * 将MultiValueMap转成String类型
      *
      * @param params MultiValueMap参数
      * @return 转换后的字符串
      ***/
-    public static String multiValueMapToString(MultiValueMap<String, String> params) {
-        if (params == null || params.isEmpty()) {
+    public static String multiValueMapToString(MultiValueMap<String, String> multiValueMap) {
+        if (multiValueMap == null || multiValueMap.isEmpty()) {
             return "";
         }
 
-        Map<String, String> map = params.entrySet()
-                .stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, entry -> {
-                    String value = StringUtils.collectionToDelimitedString(entry.getValue(), ",");
-                    return value != null ? value : "";
-                }));
 
-        return map.entrySet()
-                .stream()
-                .map(entry -> entry.getKey() + "=" + entry.getValue())
+        String queryString = multiValueMap.entrySet().stream()
+                .map(entry -> entry.getKey() + "=" + String.join(",", entry.getValue()))
                 .collect(Collectors.joining("&"));
+
+        return  "?"+queryString;
     }
 
 

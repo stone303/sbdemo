@@ -9,7 +9,6 @@ import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
 
 
-
 public class SSL extends SimpleClientHttpRequestFactory {
 
     @Override
@@ -46,6 +45,8 @@ public class SSL extends SimpleClientHttpRequestFactory {
         }
 
     }
+
+
     private static class SkipX509TrustManager implements X509TrustManager {
         @Override
         public X509Certificate[] getAcceptedIssuers() {
