@@ -77,8 +77,6 @@ public class RestTemplateConfigTest {
         System.out.println( responseEntity.getBody());
     }
 
-
-
     @Test
     public void restTemplate_httpnosGet() {
         // 创建自定义的 RestTemplate
@@ -130,8 +128,7 @@ public class RestTemplateConfigTest {
         requestMap.add(  "appkey",  "3905d343fe72156d");
         requestMap.add( "areacode" , "0516");
 
-        List<MultiValueMap<String, String>> requestBodyList = McdcService.getMCDCparams (requestMap);
-
+        List<MultiValueMap<String, String>> requestBodyList = McdcService.getMcdcParams (requestMap);
 
         for (MultiValueMap requestBody : requestBodyList) {
             // 将设置的header、body参数加入http请求

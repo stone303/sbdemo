@@ -1,5 +1,6 @@
 package com.example.sbdemo.service;
 
+import com.example.sbdemo.utils.RestTemplateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -12,12 +13,16 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 @Component
 public class HttpService {
+
+
     @Autowired
     private RestTemplate restTemplate;
+    //RestTemplate restTemplate = new RestTemplate(new SSL());
 
     /*** 实现restTemplate的post请求* */
     public ResponseEntity post(String serverUrl, MultiValueMap<String, String> requestMap)
     {
+        RestTemplateUtil.trustAllHosts();
         HttpHeaders headers = new HttpHeaders( ) ;
         headers.add( "Content-Type", "application/x-www-form-urlencoded");
 
@@ -29,7 +34,6 @@ public class HttpService {
 
         // Log输出请求body & 返回 body
         log.info("\n\n" +"requestBody"+ requestMap.toSingleValueMap());
-
         log.info("requestBody"+responseEntity.getBody()+"\n\n");
 
         return responseEntity;
@@ -37,9 +41,12 @@ public class HttpService {
 
     public ResponseEntity get(String serverUrl, String requestParam)
     {
+        log.info("---requestParam---"+requestParam);
+        log.info("---serverUrl---"+serverUrl);
+        RestTemplateUtil.trustAllHosts();
         String requestUrl = serverUrl + requestParam;
-
-        ResponseEntity<String> responseEntity = restTemplate. getForEntity(requestUrl, String. class);
+        log.info(requestUrl);
+        ResponseEntity<String> responseEntity = restTemplate.getForEntity(requestUrl, String.class);
 
         log.info("\n\n" +"--requestUrl-- "+ requestUrl);
         log.info("--requestUrl-- "+ responseEntity.getBody() + "\n\n");

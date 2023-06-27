@@ -1,5 +1,7 @@
 package com.example.sbdemo.service;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -7,9 +9,14 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * @author guocang.shi
+ */
+@Slf4j
+@Component
 public class McdcService {
 
-    public static List<MultiValueMap<String, String>> getMCDCparams(MultiValueMap<String, String> sourceMap) {
+    public static List<MultiValueMap<String, String>> getMcdcParams(MultiValueMap<String, String> sourceMap) {
 
 // MCDCList 为拼接后的list
         List<MultiValueMap<String, String>> MCDCList= new ArrayList<>();
