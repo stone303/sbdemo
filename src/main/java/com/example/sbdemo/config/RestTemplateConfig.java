@@ -7,7 +7,6 @@ import org.springframework.web.client.RestTemplate;
 /**
  * @author guocang.shi
  *
- *
  *传统情况下在java代码里访问restful服务，一般使用Apache的HttpClient，不过此种方法使用起来太过繁琐。
  * Spring这么强大的框架当然会提供一种简单便捷的模板类来进行操作，这就是RestTemplate。
  *

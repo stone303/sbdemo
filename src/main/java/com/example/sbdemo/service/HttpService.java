@@ -10,10 +10,15 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+/**
+ * @author guocang.shi
+ *
+ *
+ *
+ */
 @Slf4j
 @Component
 public class HttpService {
-
 
     @Autowired
     private RestTemplate restTemplate;
@@ -52,8 +57,5 @@ public class HttpService {
         log.info("--requestUrl-- "+ responseEntity.getBody() + "\n\n");
 
         return responseEntity;
-
     }
-
-
 }

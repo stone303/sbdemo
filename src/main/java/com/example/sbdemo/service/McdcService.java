@@ -18,11 +18,11 @@ public class McdcService {
 
     public static List<MultiValueMap<String, String>> getMcdcParams(MultiValueMap<String, String> sourceMap) {
 
-// MCDCList 为拼接后的list
-        List<MultiValueMap<String, String>> MCDCList= new ArrayList<>();
+        // MCDCList 为拼接后的list
+        List<MultiValueMap<String, String>> mCDCList = new ArrayList<>();
 
-// 首先将正常的请求body放入MCDCList
-        MCDCList.add(sourceMap);
+        // 首先将正常的请求body放入MCDCList
+        mCDCList.add(sourceMap);
 
         /*  嵌套循环：
          *      第一层循环（根据key遍历sourceMap，生成对应key的异常value）：
@@ -43,30 +43,28 @@ public class McdcService {
          *
          *      第一层循环结束后，会获得一个完整的符合MCDC规则的请求体列表 MCDCList
          *
+         *
+         * sourceMap是一个Map类型的对象，keySet()方法返回该Map中所有键的集合。
+         * Iterator<String> iterator = sourceMap.keySet().iterator()这一行代码将创建一个Iterator对象，并将其初始化为sourceMap键集合的迭代器。
+         * iterator.hasNext()是一个循环条件，表示迭代器是否还有下一个元素。如果有，则循环继续执行；如果没有，则循环结束。
+         * 可以通过iterator.next()方法获取迭代器的下一个元素
+         *
          */
         for(Iterator<String> iterator = sourceMap.keySet().iterator(); iterator.hasNext();) {
 
             String sourceKey = iterator.next();
-
             String nullValue = "";
-
             MultiValueMap<String, String> nullDestMap= new LinkedMultiValueMap<>();
-
             for(Iterator<String> iterator1 = sourceMap.keySet().iterator(); iterator1.hasNext();) {
-
                 String destKey = iterator1.next();
-
                 if(destKey.equals(sourceKey)) {
-
                     nullDestMap.add(destKey, nullValue);
                 } else{
-
                     nullDestMap.add(destKey, sourceMap.getFirst(destKey));
                 }
             }
-
-            MCDCList.add(nullDestMap);
+            mCDCList.add(nullDestMap);
         }
-        return MCDCList;
+        return mCDCList;
     }
 }

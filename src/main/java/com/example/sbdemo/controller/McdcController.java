@@ -59,7 +59,7 @@ public class McdcController {
             for (MultiValueMap requestMap : mcdcList) {
                 McdcBody mcdcBody = new McdcBody();
                 //requestMap 转为String
-              //  responseEntity = httpService.get(url, MapUtil.map2UrlStr(requestMap));
+               //responseEntity = httpService.get(url, MapUtil.map2UrlStr(requestMap));
                 log.info("Request: ---get---"+requestMap);
                 responseEntity = httpService.get(url, MapUtil.multiValueMapToString(requestMap));
 
@@ -81,7 +81,6 @@ public class McdcController {
                 mcdcBody. setResponseBody(JSONObject.parseObject( responseEntity.getBody().toString()));
                 responseList.add(mcdcBody) ;
             }
-
         }
         // McdcBody 装进 McdcResponse
         mcdcResponse.setResult("success");
