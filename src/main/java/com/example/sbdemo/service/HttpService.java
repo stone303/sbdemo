@@ -13,8 +13,6 @@ import org.springframework.web.client.RestTemplate;
 /**
  * @author guocang.shi
  *
- *
- *
  */
 @Slf4j
 @Component
@@ -39,7 +37,9 @@ public class HttpService {
 
         // Log输出请求body & 返回 body
         log.info("\n\n" +"requestBody"+ requestMap.toSingleValueMap());
-        log.info("requestBody"+responseEntity.getBody()+"\n\n");
+        log.info("--requestBody--"+responseEntity.getBody()+"\n\n");
+        log.info("--getStatusCode--"+responseEntity.getStatusCode()+"\n\n");
+        log.info("--getHeaders--"+responseEntity.getHeaders()+"\n\n");
 
         return responseEntity;
     }
@@ -54,8 +54,9 @@ public class HttpService {
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(requestUrl, String.class);
 
         log.info("\n\n" +"--requestUrl-- "+ requestUrl);
-        log.info("--requestUrl-- "+ responseEntity.getBody() + "\n\n");
-
+        log.info("--getBody-- "+ responseEntity.getBody() + "\n\n");
+        log.info("--getStatusCodeValue--"+responseEntity.getStatusCodeValue()+"\n\n");
+        log.info("--getHeaders--"+responseEntity.getHeaders()+"\n\n");
         return responseEntity;
     }
 }
