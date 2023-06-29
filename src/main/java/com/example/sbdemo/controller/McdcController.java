@@ -25,7 +25,6 @@ public class McdcController {
     @Autowired
     HttpService httpService;
 
-
     /***
      *接收三个参数:urT 被测APT的服务地址method post、get中的一种被测API的基本请求传参initialParam
      * 将initialParam转换成MC/DC用例组* 遍历MC/DC用例组: 请求被测API (url、method、MC/DC param.
@@ -45,9 +44,12 @@ public class McdcController {
         log.info("Request: ---"+ method);
         log.info("Request: ---"+ initialParam);
 
-
+        // 将String initialParam 转换为MultiValueMap
         MultiValueMap<String, String> initialMultiMap = MapUtil.jsonStr2MultiMap(initialParam);
+
+        // 将MultiValueMap 转换为 List
         List<MultiValueMap<String, String>> mcdcList = McdcService.getMcdcParams(initialMultiMap);
+
         McdcResponse mcdcResponse = new McdcResponse();
         ResponseEntity responseEntity;
         List<McdcBody> responseList = new ArrayList();
@@ -57,6 +59,7 @@ public class McdcController {
             log.info("Request: ---get---");
             //请求被测API// 遍历MC/DC用例组，
             for (MultiValueMap requestMap : mcdcList) {
+
                 McdcBody mcdcBody = new McdcBody();
                 //requestMap 转为String
                //responseEntity = httpService.get(url, MapUtil.map2UrlStr(requestMap));
@@ -84,7 +87,8 @@ public class McdcController {
         }
         // McdcBody 装进 McdcResponse
         mcdcResponse.setResult("success");
-        mcdcResponse.setMcdcResult( responseList);
+        mcdcResponse.setMcdcResult(responseList);
+
         return mcdcResponse;
         }
 
