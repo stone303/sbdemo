@@ -24,7 +24,6 @@ public class MapUtil {
     {
 
         log.info("----"+str);
-
         JSONObject jsonobject = JSONObject.parseObject(str);
 
         // convert JSONObject to Map
