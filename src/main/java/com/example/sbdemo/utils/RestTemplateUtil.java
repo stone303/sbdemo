@@ -40,6 +40,4 @@ public class RestTemplateUtil {
             e.printStackTrace();
         }
     }
-
-
 }

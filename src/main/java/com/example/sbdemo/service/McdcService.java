@@ -18,10 +18,10 @@ public class McdcService {
 
     public static List<MultiValueMap<String, String>> getMcdcParams(MultiValueMap<String, String> sourceMap) {
 
-// MCDCList 为拼接后的list
+        // MCDCList 为拼接后的list
         List<MultiValueMap<String, String>> MCDCList= new ArrayList<>();
 
-// 首先将正常的请求body放入MCDCList
+        // 首先将正常的请求body放入MCDCList
         MCDCList.add(sourceMap);
 
         /*  嵌套循环：
@@ -42,29 +42,21 @@ public class McdcService {
          *          将destMapNull放入MCDCList
          *
          *      第一层循环结束后，会获得一个完整的符合MCDC规则的请求体列表 MCDCList
-         *
          */
         for(Iterator<String> iterator = sourceMap.keySet().iterator(); iterator.hasNext();) {
-
             String sourceKey = iterator.next();
-
             String nullValue = "";
-
+            //在 LinkedHashMap 中，插入顺序得以保留
             MultiValueMap<String, String> nullDestMap= new LinkedMultiValueMap<>();
-
             for(Iterator<String> iterator1 = sourceMap.keySet().iterator(); iterator1.hasNext();) {
-
                 String destKey = iterator1.next();
-
                 if(destKey.equals(sourceKey)) {
-
                     nullDestMap.add(destKey, nullValue);
                 } else{
-
+                    //MultiValueMap 它具有一个getFirst()方法，可以获取具有指定键的第一个值。
                     nullDestMap.add(destKey, sourceMap.getFirst(destKey));
                 }
             }
-
             MCDCList.add(nullDestMap);
         }
         return MCDCList;

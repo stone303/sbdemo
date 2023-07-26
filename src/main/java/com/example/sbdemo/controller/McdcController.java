@@ -31,7 +31,7 @@ public class McdcController {
      * 将initialParam转换成MC/DC用例组* 遍历MC/DC用例组: 请求被测API (url、method、MC/DC param.
      * 整合得到一组MC/DC param、对应的被测API返回值为json数组
      ** 输出json数组
-     *
+     *使用@ResponseBody注解可以将方法的返回值转换为指定的响应格式，如JSON、XML等，并将其直接写入HTTP响应体中。
      */
 
     @RequestMapping(value = "/mcdc",method = RequestMethod.POST)
@@ -45,7 +45,6 @@ public class McdcController {
         log.info("Request: ---"+ method);
         log.info("Request: ---"+ initialParam);
 
-
         MultiValueMap<String, String> initialMultiMap = MapUtil.jsonStr2MultiMap(initialParam);
         List<MultiValueMap<String, String>> mcdcList = McdcService.getMcdcParams(initialMultiMap);
         McdcResponse mcdcResponse = new McdcResponse();
@@ -53,7 +52,6 @@ public class McdcController {
         List<McdcBody> responseList = new ArrayList();
         // 区分get/post请求
         if (method.equals("get")) {
-
             log.info("Request: ---get---");
             //请求被测API// 遍历MC/DC用例组，
             for (MultiValueMap requestMap : mcdcList) {
@@ -81,11 +79,11 @@ public class McdcController {
                 mcdcBody. setResponseBody(JSONObject.parseObject( responseEntity.getBody().toString()));
                 responseList.add(mcdcBody) ;
             }
-
         }
         // McdcBody 装进 McdcResponse
         mcdcResponse.setResult("success");
-        mcdcResponse.setMcdcResult( responseList);
+        mcdcResponse.setMcdcResult(responseList);
+
         return mcdcResponse;
         }
 

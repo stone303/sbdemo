@@ -21,7 +21,6 @@ public class MapUtilTest {
         // JSON字符串
        // String json = "{\"appkey\":\"3905d343fe72156d\",\"areacode\":\"021\"}";
         JSONObject jsonObject = new JSONObject();
-
         jsonObject.put("appkey","3905d343fe72156d");
         jsonObject.put("areacode","021");
 
@@ -51,7 +50,6 @@ public class MapUtilTest {
 
     @Test
     public void testMultiValueMapToString() {
-
 
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("appkey", "3905d343fe72156d");

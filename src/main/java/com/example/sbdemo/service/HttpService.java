@@ -14,10 +14,12 @@ import org.springframework.web.client.RestTemplate;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author guocang.shi
+ */
 @Slf4j
 @Component
 public class HttpService {
-
 
     @Autowired
     private RestTemplate restTemplate;
@@ -70,6 +72,28 @@ public class HttpService {
         return responseEntity;
     }
 
+    /*** 实现restTemplate的post请求* */
+    public ResponseEntity postjson(String serverUrl, MultiValueMap<String, String> requestMap)
+    {
+        RestTemplateUtil.trustAllHosts();
+        HttpHeaders headers = new HttpHeaders( ) ;
+        headers.add( "Content-Type", "application/json");
+        headers.add( "Authorization", "bearer sf-63a5e754-7622-436a-926e-d1fd14a073ed");
+
+        //将设置的header、body参数加入http请求
+        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(requestMap, headers);
+
+        // post请求: ResponseEntity标识整个http相应: 状态码、头部信息以及相应体内容
+        ResponseEntity<String> responseEntity= restTemplate.postForEntity(serverUrl, entity, String.class);
+
+        // Log输出请求body & 返回 body
+        log.info("\n\n" +"requestBody"+ requestMap.toSingleValueMap());
+        log.info("responseBody"+responseEntity.getBody()+"\n\n");
+
+        return responseEntity;
+    }
+
+
     public ResponseEntity get(String serverUrl, String requestParam)
     {
         log.info("---requestParam---"+requestParam);
@@ -83,7 +107,6 @@ public class HttpService {
         log.info("--requestUrl-- "+ responseEntity.getBody() + "\n\n");
 
         return responseEntity;
-
     }
 
 

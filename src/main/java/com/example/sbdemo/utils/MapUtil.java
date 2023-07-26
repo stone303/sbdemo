@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -22,10 +23,8 @@ public class MapUtil {
 
     public static MultiValueMap<String, String> jsonStr2MultiMap( String str)
     {
-
         log.info("----"+str);
         JSONObject jsonobject = JSONObject.parseObject(str);
-
         // convert JSONObject to Map
         Map<String, String> map = new HashMap<>();
         for (String key : jsonobject.keySet()) {
@@ -78,4 +77,44 @@ public class MapUtil {
                 .collect(Collectors.toMap(Map.Entry::getKey, e -> e.getValue().get(0)));
     }
 
+    /**
+     * 将java对象转为普通的Map（单值）
+     *
+     * @return Map类型
+     */
+    public static  Map<String, String> object2Map( Object object) {
+        Map<String, String> map = new HashMap<>();
+        // 获取对象的所有字段
+        Field[] fields = object.getClass().getDeclaredFields();
+        // 遍历字段，并将字段名和字段值存储在Map中
+        for (Field field : fields) {
+            /*** 设置字段可访问***/
+            field.setAccessible(true);
+            String fieldName = field.getName();
+            String fieldValue = null;
+            try {
+                Object value = field.get(object);
+                if (value != null) {
+                    fieldValue = value.toString();
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+            map.put(fieldName, fieldValue);
+        }
+
+        return map;
+    }
+
+    /**
+     * map转String
+     * @param map
+     * @return
+     */
+    public static  String mapToString(Map<String, String> map) {
+        String result = map.entrySet().stream()
+                .map(entry -> entry.getKey() + "=" + entry.getValue())
+                .collect(Collectors.joining("&"));
+    return result;
+    }
 }

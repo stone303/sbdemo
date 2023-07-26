@@ -38,7 +38,6 @@ public class SSL extends SimpleClientHttpRequestFactory {
     }
 
     private class SkipHostnameVerifier implements HostnameVerifier {
-
         @Override
         public boolean verify(String s, SSLSession sslSession) {
             return true;
@@ -61,5 +60,6 @@ public class SSL extends SimpleClientHttpRequestFactory {
         }
 
     }
+
 
 }
